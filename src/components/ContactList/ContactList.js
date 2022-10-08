@@ -3,7 +3,7 @@ export function ContactList ({items, delete}){
         return (<li key={id}>{name} : {number}
         <button onClick={() => 
             delete(id)} 
-            type="button" >Delete</button>
+         type="button" >Delete</button>
         </li>)
     })
     return(
