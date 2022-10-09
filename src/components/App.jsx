@@ -13,12 +13,12 @@ handleChange = (e) =>{
     this.setState({[name]: value})
 }
 getFilteredContacts(){
-  const {contacts, filter} = this.state;
-  if (!filter){
-    return contacts;
+ 
+  if (!this.state.filter){
+    return this.state.contacts;
   }
-  const normalisedFilter = filter.toLocaleLowerCase();
-  const filteredContacts = contacts.filter(({name}) => {
+  const normalisedFilter = this.state.filter.toLocaleLowerCase();
+  const filteredContacts = this.state.contacts.filter(({name}) => {
     const normalisedName = name.toLocaleLowerCase();
     const result = normalisedName.includes(normalisedFilter);
     return result;
@@ -46,15 +46,16 @@ removeContact = (id) => {
 
 
   render() {
-   
+    const {removeContact, getFilteredContacts, addContacts} = this;
+
     return(
     <div>
      <h1>Phonebook</h1>
-     <ContactForm onSubmit={this.addContacts}/>
+     <ContactForm onSubmit={addContacts}/>
      <h2>Contacts</h2>
      <Filter handleChange={this.handleChange} />
-    <ContactList items={this.getFilteredContacts()} delete={this.removeContact} />
-    </div>)
+    <ContactList items={getFilteredContacts()} removeContact={removeContact} />
+    </div>) 
   }
 
 }

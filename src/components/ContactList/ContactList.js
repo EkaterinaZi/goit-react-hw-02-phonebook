@@ -1,8 +1,10 @@
-export function ContactList ({items}){
+import React from "react";
+
+export function ContactList ({items, removeContact}){
     const elements = items.map(({name, number, id}) => {
         return (<li key={id}>{name} : {number}
         <button onClick={() => 
-            console.log(id)} 
+            removeContact(id)} 
          type="button" >Delete</button>
         </li>)
     })
