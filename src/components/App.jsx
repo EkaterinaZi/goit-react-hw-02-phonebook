@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid';
 import ContactForm from "components/ContactForm/ContactForm";
 import {ContactList} from "components/ContactList/ContactList"
 import {Filter} from "components/Filter/Filter"
+import {Title, Container, TitleContact}  from "./App.styled"
 class App extends React.Component{
   state = {
     contacts: [],
@@ -13,12 +14,12 @@ handleChange = (e) =>{
     this.setState({[name]: value})
 }
 getFilteredContacts(){
- 
-  if (!this.state.filter){
-    return this.state.contacts;
+  const { contacts, filter } = this.state;
+  if (!filter){
+    return contacts;
   }
-  const normalisedFilter = this.state.filter.toLocaleLowerCase();
-  const filteredContacts = this.state.contacts.filter(({name}) => {
+  const normalisedFilter = filter.toLocaleLowerCase();
+  const filteredContacts = contacts.filter(({name}) => {
     const normalisedName = name.toLocaleLowerCase();
     const result = normalisedName.includes(normalisedFilter);
     return result;
@@ -26,6 +27,9 @@ getFilteredContacts(){
   return filteredContacts;
 }
 addContacts = (data) => {
+  if(this.isDuplicate(data)){
+    return alert(`${data.name} is already in contacts.`)
+  }
   this.setState((prevState) => {
     const newContact = {
       id: nanoid(),
@@ -43,19 +47,25 @@ removeContact = (id) => {
   }
   })
  }
+isDuplicate({name}){
+  const {contacts} = this.state;
+  const result = contacts.find((item) => item.name === name)
+  return result
+}
+
 
 
   render() {
-    const {removeContact, getFilteredContacts, addContacts} = this;
-
+    const check = this.state.contacts;
+  
     return(
-    <div>
-     <h1>Phonebook</h1>
-     <ContactForm onSubmit={addContacts}/>
-     <h2>Contacts</h2>
+    <Container>
+     <Title>Phonebook</Title>
+     <ContactForm onSubmit={this.addContacts}/>
      <Filter handleChange={this.handleChange} />
-    <ContactList items={getFilteredContacts()} removeContact={removeContact} />
-    </div>) 
+     {check.length === 0 ? ` ` : (<TitleContact>Contacts</TitleContact>)}
+     <ContactList items={this.getFilteredContacts()} removeContact={this.removeContact} />
+     </Container>) 
   }
 
 }

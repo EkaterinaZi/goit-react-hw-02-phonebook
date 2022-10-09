@@ -1,19 +1,21 @@
 import React from 'react';
+import { Title, Input } from './Filter.styled';
 import { nanoid } from 'nanoid';
 
 
 export const Filter = ({handleChange, filter}) => {
     const filterId = nanoid();
     return(
-   <h3>
-    Find contacts by name
-    <input 
+        <>
+   <Title>
+    Find contacts by name</Title>
+    <Input 
     id={filterId}
     type="text" 
     name="filter" 
     onChange={handleChange} 
     value={filter}>
-    </input>
-    </h3>
+    </Input>
+    </>
 )
 }
